@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Äänestys</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-warning">
+        <div class="container-fluid">
+            <a class="navbar-brand">Äänestys <i class="bi bi-bar-chart-steps"></i></a>
+            <div class="justify-content-start" id="userButtons">
+                <button class="btn btn-outline-dark" type="button" id="loginButton" data-bs-toggle="modal" data-bs-target="#loginModal">Kirjaudu</button>
+                <button class="btn btn-outline-dark" type="button" id="registerButton" data-bs-toggle="modal" data-bs-target="#registerModal">Rekisteröidy</button>
+                <button class="btn btn-outline-dark d-none" type="button" id="logoutButton" onclick="logout()">Kirjaudu ulos</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Create/delete vote -->
+    <div class="container mw-100 p-3 bg-dark text-warning">
+        <div class="d-flex justify-content-between">
+            <div>
+                <p id="flavorText">Anna äänesi kuulua. <i class="bi bi-megaphone"></i></p>
+                <p class="d-none" id="welcomeText">Tervetuloa <span id="loggedUser"></span>!</p>
+            </div>
+            <div class="invisible" id="adminButton">
+                <button class="btn btn-outline-warning" type="button" data-bs-toggle="modal" data-bs-target="#adminModal">Luo/poista kysely</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Polls -->
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row" id="cardholder">
+                <div class="col-md-4" id="Esamerkki">
+                    <div class="card mb-4" id="newCardEsamerkki">
+                        <div class="card-body polls Esamerkkip d-none" id="Esamerkkip">
+                            <h5 class="card-title">Esamerkki</h5>
+                            <hr>
+                            <p class="card-text">Tämä on esimerkki</p>
+                            <div class="form-check mb-2 col" id="newOptionEsamerkki0">
+                                <input class="form-check-input" type="radio" name="exampleFrom" id="optionEsamerkki0">
+                                <label class="form-check-label" for="optionEsamerkki0">Juu</label>
+                            </div>
+                            <div class="form-check mb-2 col" id="newOptionEsamerkki1">
+                                <input class="form-check-input" type="radio" name="exampleFrom" id="optionEsamerkki1">
+                                <label class="form-check-label" for="optionEsamerkki1">Ei</label>
+                            </div>
+                            <div class="form-check mb-2 col" id="newOptionEsamerkki2">
+                                <input class="form-check-input" type="radio" name="exampleFrom" id="optionEsamerkki2">
+                                <label class="form-check-label" for="optionEsamerkki2">Selvä</label>
+                            </div>
+                            <div class="form-check mb-2 col" id="newOptionEsamerkki3">
+                                <input class="form-check-input" type="radio" name="exampleFrom" id="optionEsamerkki3">
+                                <label class="form-check-label" for="optionEsamerkki3">Canada</label>
+                            </div>
+                            <button class="btn btn-outline-dark btn-warning" type="button" id="EsamerkkiButton" onclick="submit('Esamerkki')">Vastaa</button>
+                        </div>
+                        <div class="card-body results Esamerkkir" id="Esamerkkir">
+                            <h5 class="card-title">Esamerkki</h5>
+                            <hr>
+                            <small id="optionREsamerkki0">Juu: <span id="Esamerkki0amount">7</span>-ääntä</small>
+                            <div class="progress" id="rEsamerkki0">
+                                <div class="progress-bar bg-warning text-dark" role="progressbar" style="width: 7%" id="rrEsamerkki0"></div>
+                            </div>
+                            <small id="optionREsamerkki1">Ei: <span id="Esamerkki1amount">29</span>-ääntä</small>
+                            <div class="progress" id="rEsamerkki1">
+                                <div class="progress-bar bg-warning text-dark" role="progressbar" style="width: 29%" id="rrEsamerkki1"></div>
+                            </div>
+                            <small id="optionREsamerkki2">Selvä: <span id="Esamerkki2amount">21</span>-ääntä</small>
+                            <div class="progress" id="rEsamerkki2"><div class="progress-bar bg-warning text-dark" role="progressbar" style="width: 21%" id="rrEsamerkki2"></div>
+                            </div>
+                            <small id="optionREsamerkki3">Canada: <span id="Esamerkki3amount">43</span>-ääntä</small><div class="progress" id="rEsamerkki3">
+                            <div class="progress-bar bg-warning text-dark" role="progressbar" style="width: 43%" id="rrEsamerkki3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" id="Puolet">
+                    <div class="card mb-4" id="newCardPuolet">
+                        <div class="card-body polls d-none Puoletp" id="Puoletp">
+                            <h5 class="card-title">Voiko puolet olla väärässä?</h5>
+                            <hr>
+                            <p class="card-text">Voiko puolet ihmisistä olla väärässä?</p>
+                            <div class="form-check mb-2 col" id="newOptionPuolet0">
+                                <input class="form-check-input" type="radio" name="exampleFrom" id="optionPuolet0">
+                                <label class="form-check-label" for="optionPuolet0">Voi</label>
+                            </div>
+                            <div class="form-check mb-2 col" id="newOptionPuolet1">
+                                <input class="form-check-input" type="radio" name="exampleFrom" id="optionPuolet1">
+                                <label class="form-check-label" for="optionPuolet1">Ei voi</label>
+                            </div>
+                            <button class="btn btn-outline-dark btn-warning" type="button" id="PuoletButton" onclick="submit('Puolet')">Vastaa</button>
+                        </div>
+                        <div class="card-body results Puoletr" id="Puoletr">
+                            <h5 class="card-title">Voiko puolet olla väärässä?</h5>
+                            <hr>
+                            <small id="optionRPuolet0">Voi: <span id="Puolet0amount">4850000000</span>-ääntä</small>
+                            <div class="progress" id="rPuolet0">
+                                <div class="progress-bar bg-warning text-dark" role="progressbar" style="width: 50%" id="rrPuolet0"></div>
+                            </div>
+                            <small id="optionRPuolet1">Ei voi: <span id="Puolet1amount">4850000000</span>-ääntä</small>
+                            <div class="progress" id="rPuolet1">
+                                <div class="progress-bar bg-warning text-dark" role="progressbar" style="width: 50%" id="rrPuolet1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login pop -->
+    <div class="modal fade" id="loginModal" tabindex="-1"  aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border border-warning bg-dark text-warning">
+            <h5 class="modal-title">Kirjaudu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label>Käyttäjätunnus</label>
+                        <input type="username" class="form-control" id="loginUsername" placeholder="Käyttäjätunnus">    
+                    </div>
+                    <div class="form-group">
+                        <label>Salasana</label>
+                        <input type="password" class="form-control" id="loginPassword" placeholder="Salasana">
+                    </div>
+                </form>
+                <small class="form-text text-danger" id="loginNameNote"></small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Takaisin</button>
+                <button type="button" class="btn btn-warning border border-dark" onclick="login()">Kirjaudu</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Register pop -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border border-warning bg-dark text-warning">
+            <h5 class="modal-title">Rekisteröidy</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                      <label>Käyttäjätunnus</label>
+                      <input type="username" class="form-control" id="createUsername" placeholder="Käyttäjätunnus">
+                      <small class="form-text text-danger" id="registerNameNote"></small>
+                    </div>
+                    <div class="form-group">
+                      <label>Salasana</label>
+                      <input type="password" class="form-control" id="createPassword" placeholder="Salasana">
+                      <small class="form-text text-danger" id="registerPasswordNote"></small>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="createAdmin">
+                        <label class="form-check-label">Ylläpitäjä</label>
+                      </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Takaisin</button>
+                <button type="button" class="btn btn-warning border border-dark" onclick="register()">Luo tunnus</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Create and delete pop -->
+    <div class="modal fade" id="adminModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border border-warning bg-dark text-warning">
+            <h5 class="modal-title">Luo tai poista kysely</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <h5>Luo kysely</h5>
+                    <div class="form-group">
+                        <label>Kyselyn nimi</label>
+                        <input type="name" class="form-control" id="createPollName" placeholder="*Kyselyn nimi">
+                        <small class="form-text text-danger" id="pollNameCreate"></small>
+                        <br>
+                    </div>
+                    <div class="form-group">
+                        <label>Kyselyn tiedot</label>
+                        <input type="description" class="form-control" id="createPollDescription" placeholder="*Kyselyn tiedot">
+                        <small class="form-text text-danger" id="pollDescriptionCreate"></small>
+                        <br>
+                    </div>
+                    <div class="form-group">
+                        <label>Vaihtoehdot (vähintään kaksi, jätä tyhjäksi tarpeettomat kohdat tyhjäksi)</label>
+                        <input type="option" class="form-control" id="createPollOption1" placeholder="*Vaihtoehto 1">
+                        <small class="form-text text-danger atleastTwo"></small>
+                        <br>
+                        <input type="option" class="form-control" id="createPollOption2" placeholder="*Vaihtoehto 2">
+                        <small class="form-text text-danger atleastTwo"></small>
+                        <br>
+                        <input type="option" class="form-control" id="createPollOption3" placeholder="Vaihtoehto 3">
+                        <br>
+                        <input type="option" class="form-control" id="createPollOption4" placeholder="Vaihtoehto 4">
+                    </div>
+                    <br>
+                    <button type="button" class="btn btn-warning border border-dark" onclick="checknCreatePoll()">Luo Kysely</button>
+                </form>
+                <br>
+                <hr/>
+                <br>
+                <form>
+                    <h5>Poista kysely</h5>
+                    <div class="form-group">
+                        <label>Kyselyn nimi</label>
+                        <input type="name" class="form-control" id="deletePollName" placeholder="*Kyselyn nimi">
+                        <small class="form-text text-danger" id="pollNameDelete"></small>
+                        <br>
+                    </div>
+                    <button type="button" class="btn btn-warning border border-dark" onclick="deletePoll()">Poista Kysely</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Takaisin</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Registered successfully -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border border-warning bg-dark text-warning">
+                    <h5 class="modal-title">Rekisteröityminen onnistui</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vote reject -->
+    <div class="modal fade" id="rejectModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border border-warning bg-dark text-warning">
+                    <h5 class="modal-title">Voit äänestää vain kerran. Ääntä ei laskettu.</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
